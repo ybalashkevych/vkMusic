@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9251DCF01A8BFCB8008656AF /* BYPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9251DCEF1A8BFCB8008656AF /* BYPlayerViewController.m */; };
 		928D4E651A8603CB0004C398 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 928D4E641A8603CB0004C398 /* main.m */; };
 		928D4E681A8603CB0004C398 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 928D4E671A8603CB0004C398 /* AppDelegate.m */; };
 		928D4E6B1A8603CB0004C398 /* vkMusi_.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 928D4E691A8603CB0004C398 /* vkMusi_.xcdatamodeld */; };
@@ -14,16 +15,15 @@
 		928D4E761A8603CB0004C398 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 928D4E741A8603CB0004C398 /* LaunchScreen.xib */; };
 		928D4E821A8603CB0004C398 /* vkMusi_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 928D4E811A8603CB0004C398 /* vkMusi_Tests.m */; };
 		928D4E8E1A86052A0004C398 /* Main_IPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 928D4E8D1A86052A0004C398 /* Main_IPhone.storyboard */; };
-		928D4E901A8605BE0004C398 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928D4E8F1A8605BE0004C398 /* CoreFoundation.framework */; };
 		928D4E921A8605F60004C398 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928D4E911A8605F60004C398 /* CoreData.framework */; };
 		928D4E941A8606050004C398 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928D4E931A8606050004C398 /* UIKit.framework */; };
 		928D4E961A8606140004C398 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928D4E951A8606140004C398 /* AVFoundation.framework */; };
+		928FEEA31A8E607E00B1F465 /* BYSong.m in Sources */ = {isa = PBXBuildFile; fileRef = 928FEEA21A8E607E00B1F465 /* BYSong.m */; };
 		92C7D59D1A889ADF00DA13E4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C7D59C1A889ADF00DA13E4 /* Foundation.framework */; };
 		92C7D5A51A889D5600DA13E4 /* BYDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C7D5A41A889D5600DA13E4 /* BYDataManager.m */; };
 		92C7D5A91A88AB3900DA13E4 /* BYLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C7D5A81A88AB3900DA13E4 /* BYLoginViewController.m */; };
 		92C7D5AD1A88B7DB00DA13E4 /* BYServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C7D5AC1A88B7DB00DA13E4 /* BYServerManager.m */; };
 		92C7D5B01A88D4B900DA13E4 /* BYSongsListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C7D5AF1A88D4B900DA13E4 /* BYSongsListTableViewController.m */; };
-		92C7D5B41A89454400DA13E4 /* BYSong.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C7D5B31A89454400DA13E4 /* BYSong.m */; };
 		92C7D5B71A894A5600DA13E4 /* BYAccessToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C7D5B61A894A5600DA13E4 /* BYAccessToken.m */; };
 		AE47306B0123518099160A23 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1414F40D72C3F281E88A40D9 /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -41,6 +41,8 @@
 /* Begin PBXFileReference section */
 		1414F40D72C3F281E88A40D9 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DA2A477B2580E01D8427943 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		9251DCEE1A8BFCB8008656AF /* BYPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYPlayerViewController.h; sourceTree = "<group>"; };
+		9251DCEF1A8BFCB8008656AF /* BYPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYPlayerViewController.m; sourceTree = "<group>"; };
 		928D4E5F1A8603CB0004C398 /* vkMusiс.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "vkMusiс.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		928D4E631A8603CB0004C398 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		928D4E641A8603CB0004C398 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -53,11 +55,12 @@
 		928D4E801A8603CB0004C398 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		928D4E811A8603CB0004C398 /* vkMusi_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = vkMusi_Tests.m; sourceTree = "<group>"; };
 		928D4E8D1A86052A0004C398 /* Main_IPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_IPhone.storyboard; sourceTree = "<group>"; };
-		928D4E8F1A8605BE0004C398 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		928D4E911A8605F60004C398 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		928D4E931A8606050004C398 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		928D4E951A8606140004C398 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		928D4E981A863A1C0004C398 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		928FEEA11A8E607E00B1F465 /* BYSong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYSong.h; sourceTree = "<group>"; };
+		928FEEA21A8E607E00B1F465 /* BYSong.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYSong.m; sourceTree = "<group>"; };
 		92C7D59C1A889ADF00DA13E4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		92C7D5A31A889D5600DA13E4 /* BYDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BYDataManager.h; path = ../BYDataManager.h; sourceTree = "<group>"; };
 		92C7D5A41A889D5600DA13E4 /* BYDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BYDataManager.m; path = ../BYDataManager.m; sourceTree = "<group>"; };
@@ -67,8 +70,6 @@
 		92C7D5AC1A88B7DB00DA13E4 /* BYServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYServerManager.m; sourceTree = "<group>"; };
 		92C7D5AE1A88D4B900DA13E4 /* BYSongsListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYSongsListTableViewController.h; sourceTree = "<group>"; };
 		92C7D5AF1A88D4B900DA13E4 /* BYSongsListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYSongsListTableViewController.m; sourceTree = "<group>"; };
-		92C7D5B21A89454400DA13E4 /* BYSong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYSong.h; sourceTree = "<group>"; };
-		92C7D5B31A89454400DA13E4 /* BYSong.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYSong.m; sourceTree = "<group>"; };
 		92C7D5B51A894A5600DA13E4 /* BYAccessToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYAccessToken.h; sourceTree = "<group>"; };
 		92C7D5B61A894A5600DA13E4 /* BYAccessToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYAccessToken.m; sourceTree = "<group>"; };
 		9E17B5BF79E09521D21EC16E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -83,7 +84,6 @@
 				928D4E961A8606140004C398 /* AVFoundation.framework in Frameworks */,
 				928D4E941A8606050004C398 /* UIKit.framework in Frameworks */,
 				928D4E921A8605F60004C398 /* CoreData.framework in Frameworks */,
-				928D4E901A8605BE0004C398 /* CoreFoundation.framework in Frameworks */,
 				AE47306B0123518099160A23 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -169,7 +169,6 @@
 				928D4E951A8606140004C398 /* AVFoundation.framework */,
 				928D4E931A8606050004C398 /* UIKit.framework */,
 				928D4E911A8605F60004C398 /* CoreData.framework */,
-				928D4E8F1A8605BE0004C398 /* CoreFoundation.framework */,
 				1414F40D72C3F281E88A40D9 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -192,6 +191,8 @@
 				92C7D5A81A88AB3900DA13E4 /* BYLoginViewController.m */,
 				92C7D5AE1A88D4B900DA13E4 /* BYSongsListTableViewController.h */,
 				92C7D5AF1A88D4B900DA13E4 /* BYSongsListTableViewController.m */,
+				9251DCEE1A8BFCB8008656AF /* BYPlayerViewController.h */,
+				9251DCEF1A8BFCB8008656AF /* BYPlayerViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -210,8 +211,8 @@
 		92C7D5B11A88D4C900DA13E4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				92C7D5B21A89454400DA13E4 /* BYSong.h */,
-				92C7D5B31A89454400DA13E4 /* BYSong.m */,
+				928FEEA11A8E607E00B1F465 /* BYSong.h */,
+				928FEEA21A8E607E00B1F465 /* BYSong.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -364,8 +365,9 @@
 				92C7D5AD1A88B7DB00DA13E4 /* BYServerManager.m in Sources */,
 				92C7D5A91A88AB3900DA13E4 /* BYLoginViewController.m in Sources */,
 				928D4E651A8603CB0004C398 /* main.m in Sources */,
+				928FEEA31A8E607E00B1F465 /* BYSong.m in Sources */,
 				928D4E6B1A8603CB0004C398 /* vkMusi_.xcdatamodeld in Sources */,
-				92C7D5B41A89454400DA13E4 /* BYSong.m in Sources */,
+				9251DCF01A8BFCB8008656AF /* BYPlayerViewController.m in Sources */,
 				92C7D5B01A88D4B900DA13E4 /* BYSongsListTableViewController.m in Sources */,
 				92C7D5B71A894A5600DA13E4 /* BYAccessToken.m in Sources */,
 				92C7D5A51A889D5600DA13E4 /* BYDataManager.m in Sources */,

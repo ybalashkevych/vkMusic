@@ -10,4 +10,24 @@
 
 @implementation BYAccessToken
 
+- (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.token forKey:@"token"];
+    [aCoder encodeObject:self.user_id forKey:@"user_id"];
+    [aCoder encodeObject:self.expirationDate forKey:@"expirationDate"];
+    
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    
+    self = [super init];
+    
+    if (self) {
+        self.user_id = [aDecoder decodeObjectForKey:@"user_id"];
+        self.token = [aDecoder decodeObjectForKey:@"token"];
+        self.expirationDate = [aDecoder decodeObjectForKey:@"expirationDate"];
+    }
+    
+    return self;
+}
+
 @end

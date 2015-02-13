@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface BYAccessToken : NSObject
+@interface BYAccessToken : NSObject <NSCoding>
 
 @property (strong, nonatomic) NSString* token;
 @property (strong, nonatomic) NSDate*   expirationDate;
 @property (strong, nonatomic) NSString* user_id;
+
 
 @end

@@ -45,54 +45,59 @@
 
 #pragma mark - Private Methods
 
-- (BYAccessToken*)getTokenFromPath:(NSString*)path {
-    
-    NSArray* components = [path componentsSeparatedByString:@"#"];
-    NSString* parameters = [components lastObject];
-    NSArray*  pairs = [parameters componentsSeparatedByString:@"&"];
+- (BYAccessToken*)getTokenFromQuery:(NSString*)query {
+
+    NSArray*  pairs = [query componentsSeparatedByString:@"&"];
     BYAccessToken* accessToken = [[BYAccessToken alloc] init];
     
     for(NSString* pair in pairs){
         NSArray* pairAr = [pair componentsSeparatedByString:@"="];
         NSString* value = [pairAr lastObject];
         
-        if ([value isEqualToString:@"access_token"]) {
+        if ([[pairAr firstObject] isEqualToString:@"access_token"]) {
             accessToken.token = value;
         }
-        else if ([value isEqualToString:@"expires_in"]) {
+        else if ([[pairAr firstObject] isEqualToString:@"expires_in"]) {
             accessToken.expirationDate = [NSDate dateWithTimeIntervalSinceNow:[value doubleValue]];
         }
-        else if ([value isEqualToString:@"user_id"]) {
+        else if ([[pairAr firstObject] isEqualToString:@"user_id"]) {
             accessToken.user_id = value;
         }
     }
     
-    if (self.completion) {
-        self.completion(accessToken);
-    }
+    NSData* encodedToken = [NSKeyedArchiver archivedDataWithRootObject:accessToken];
+    [[NSUserDefaults standardUserDefaults] setObject:encodedToken forKey:@"accessToken"];
     
-    return nil;
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    return accessToken;
 }
 
 #pragma mark - UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     
+    NSLog(@"%@", request);
     NSString* path = [request.URL path];
     if ([path rangeOfString:@"blank"].location != NSNotFound) {
-        [self getTokenFromPath:path];
         self.navigationItem.rightBarButtonItem.enabled = YES;
+        NSString* query = [request.URL fragment];
+        BYAccessToken* accessToken = [self getTokenFromQuery:query];
+        
+        if (self.completion) {
+            self.completion(accessToken);
+        }
+        
         return NO;
     }
-    NSLog(@"%@", request);
     return YES;
 }
 
 
 #pragma mark - Actions
 
-- (void)actionDone {
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (void)actionDone:(UIBarButtonItem*)sender {
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 
