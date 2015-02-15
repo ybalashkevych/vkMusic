@@ -19,6 +19,12 @@
 		928D4E941A8606050004C398 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928D4E931A8606050004C398 /* UIKit.framework */; };
 		928D4E961A8606140004C398 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928D4E951A8606140004C398 /* AVFoundation.framework */; };
 		928FEEA31A8E607E00B1F465 /* BYSong.m in Sources */ = {isa = PBXBuildFile; fileRef = 928FEEA21A8E607E00B1F465 /* BYSong.m */; };
+		92B22EE71A90BBF000247B3C /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 92B22EE61A90BBF000247B3C /* pause.png */; };
+		92B22EEB1A90BEC500247B3C /* next.png in Resources */ = {isa = PBXBuildFile; fileRef = 92B22EE81A90BEC500247B3C /* next.png */; };
+		92B22EEC1A90BEC500247B3C /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 92B22EE91A90BEC500247B3C /* play.png */; };
+		92B22EED1A90BEC500247B3C /* previous.png in Resources */ = {isa = PBXBuildFile; fileRef = 92B22EEA1A90BEC500247B3C /* previous.png */; };
+		92B22EF91A90D0D600247B3C /* bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 92B22EF81A90D0D600247B3C /* bg.jpg */; };
+		92B22EFB1A90EC9600247B3C /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 92B22EFA1A90EC9600247B3C /* close.png */; };
 		92C7D59D1A889ADF00DA13E4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C7D59C1A889ADF00DA13E4 /* Foundation.framework */; };
 		92C7D5A51A889D5600DA13E4 /* BYDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C7D5A41A889D5600DA13E4 /* BYDataManager.m */; };
 		92C7D5A91A88AB3900DA13E4 /* BYLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C7D5A81A88AB3900DA13E4 /* BYLoginViewController.m */; };
@@ -61,6 +67,12 @@
 		928D4E981A863A1C0004C398 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		928FEEA11A8E607E00B1F465 /* BYSong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYSong.h; sourceTree = "<group>"; };
 		928FEEA21A8E607E00B1F465 /* BYSong.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYSong.m; sourceTree = "<group>"; };
+		92B22EE61A90BBF000247B3C /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
+		92B22EE81A90BEC500247B3C /* next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = next.png; sourceTree = "<group>"; };
+		92B22EE91A90BEC500247B3C /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
+		92B22EEA1A90BEC500247B3C /* previous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = previous.png; sourceTree = "<group>"; };
+		92B22EF81A90D0D600247B3C /* bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg.jpg; sourceTree = "<group>"; };
+		92B22EFA1A90EC9600247B3C /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
 		92C7D59C1A889ADF00DA13E4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		92C7D5A31A889D5600DA13E4 /* BYDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BYDataManager.h; path = ../BYDataManager.h; sourceTree = "<group>"; };
 		92C7D5A41A889D5600DA13E4 /* BYDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BYDataManager.m; path = ../BYDataManager.m; sourceTree = "<group>"; };
@@ -98,6 +110,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		923966E01A90B4C40005A312 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				92B22EF81A90D0D600247B3C /* bg.jpg */,
+				92B22EE61A90BBF000247B3C /* pause.png */,
+				92B22EE81A90BEC500247B3C /* next.png */,
+				92B22EE91A90BEC500247B3C /* play.png */,
+				92B22EEA1A90BEC500247B3C /* previous.png */,
+				92B22EFA1A90EC9600247B3C /* close.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		928D4E561A8603CB0004C398 = {
 			isa = PBXGroup;
 			children = (
@@ -134,6 +159,7 @@
 		928D4E621A8603CB0004C398 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				923966E01A90B4C40005A312 /* Images */,
 				928D4E661A8603CB0004C398 /* AppDelegate.h */,
 				928D4E671A8603CB0004C398 /* AppDelegate.m */,
 				928D4E721A8603CB0004C398 /* Images.xcassets */,
@@ -308,8 +334,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92B22EFB1A90EC9600247B3C /* close.png in Resources */,
+				92B22EF91A90D0D600247B3C /* bg.jpg in Resources */,
 				928D4E761A8603CB0004C398 /* LaunchScreen.xib in Resources */,
 				928D4E731A8603CB0004C398 /* Images.xcassets in Resources */,
+				92B22EED1A90BEC500247B3C /* previous.png in Resources */,
+				92B22EEC1A90BEC500247B3C /* play.png in Resources */,
+				92B22EE71A90BBF000247B3C /* pause.png in Resources */,
+				92B22EEB1A90BEC500247B3C /* next.png in Resources */,
 				928D4E8E1A86052A0004C398 /* Main_IPhone.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -488,6 +520,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "vkMusiс/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -500,6 +533,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "vkMusiс/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;

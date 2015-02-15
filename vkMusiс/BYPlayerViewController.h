@@ -12,9 +12,15 @@
 
 @interface BYPlayerViewController : UIViewController
 
+
 @property (strong, nonatomic) BYSong* song;
 @property (strong, nonatomic) AVPlayer* player;
+@property (weak, nonatomic) IBOutlet UIButton* playButton;
+@property (weak, nonatomic) IBOutlet UIButton* playBackButton;
+@property (weak, nonatomic) IBOutlet UIButton* playForwardButton;
+@property (weak, nonatomic) IBOutlet UIButton* titleButton;
 
-- (IBAction)actionPlaySong:(id)sender;
+- (IBAction)actionPlaySong:(UIButton*)sender;
+- (IBAction)actionDissmissController:(UIButton*)sender;
 
 @end

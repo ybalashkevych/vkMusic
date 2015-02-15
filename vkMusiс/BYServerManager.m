@@ -47,9 +47,7 @@
         NSSortDescriptor* nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
         [request setSortDescriptors:@[nameDescriptor]];
         NSManagedObjectContext* moc = self.dataManager.managedObjectContext;
-        
-        NSMutableArray* arrayOfSongs = [NSMutableArray arrayWithArray:[moc executeFetchRequest:request error:nil]];
-        
+                
         for (NSDictionary* item in items) {
             
     
