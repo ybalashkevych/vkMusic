@@ -27,11 +27,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     __weak BYPlayerViewController* weakSelf = self;
     
     CMTime time = CMTimeMakeWithSeconds(1.f, 10);
     self.timeObserver = [self.player addPeriodicTimeObserverForInterval:time queue:nil usingBlock:^(CMTime time) {
+        if (![weakSelf.currentTimeSlider isHighlighted]) {
+            weakSelf.currentTimeSlider.value = CMTimeGetSeconds(time);
+        }
+        weakSelf.beginTimeLabel.text = [weakSelf stringFromSeconds:weakSelf.currentTimeSlider.value];
+        NSInteger secondsToEnd = [weakSelf.currentSong.duration integerValue] - weakSelf.currentTimeSlider.value;
+        weakSelf.endTimeLabel.text  =   [weakSelf stringFromSeconds:secondsToEnd];
+        
         NSLog(@"%f", CMTimeGetSeconds(time));
         NSLog(@"%d",[weakSelf.currentSong.duration integerValue]);
         if (CMTimeGetSeconds(time) >= [weakSelf.currentSong.duration floatValue]) {
@@ -102,6 +108,8 @@
 
 - (void)prepareToPlay {
 
+    self.currentTimeSlider.maximumValue = [self.currentSong.duration floatValue];
+    self.currentTimeSlider.value        = 0.f;
     [self downloadInBackground];
     [self.playButton setBackgroundImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
     [self.titleButton setTitle:[NSString stringWithFormat:@"%@ - %@", self.currentSong.artist, self.currentSong.title] forState:UIControlStateNormal];
@@ -109,6 +117,14 @@
 
 - (void)configurePlayer {
     [self.player replaceCurrentItemWithPlayerItem:[AVPlayerItem playerItemWithURL:self.fileURL]];
+}
+
+- (NSString*)stringFromSeconds:(NSUInteger)seconds {
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"mm:ss"];
+    NSDate* date = [NSDate dateWithTimeIntervalSince1970:seconds];
+    NSString* time = [formatter stringFromDate:date];
+    return time;
 }
 
 #pragma mark - Actions
@@ -150,6 +166,11 @@
 
     }
     
+}
+
+- (IBAction)actionChangeCurrentTime:(UISlider *)sender {
+    [self.player seekToTime:CMTimeMakeWithSeconds(sender.value, 10)];
+
 }
 
 #pragma mark - Getters and Setters

@@ -21,9 +21,14 @@
 @property (weak, nonatomic) IBOutlet UIButton*  playBackButton;
 @property (weak, nonatomic) IBOutlet UIButton*  playForwardButton;
 @property (weak, nonatomic) IBOutlet UIButton*  titleButton;
+@property (weak, nonatomic) IBOutlet UISlider*  currentTimeSlider;
+@property (weak, nonatomic) IBOutlet UILabel*   beginTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel*   endTimeLabel;
+
 
 - (IBAction)actionPlaySong:(UIButton*)sender;
 - (IBAction)actionDissmissController:(UIButton*)sender;
 - (IBAction)actionPlayBackAndForward:(UIButton*)sender;
+- (IBAction)actionChangeCurrentTime:(UISlider*)sender;
 
 @end
