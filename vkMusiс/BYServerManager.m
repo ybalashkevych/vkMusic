@@ -44,7 +44,7 @@
         
         NSFetchRequest* request = [[NSFetchRequest alloc] init];
         [request setEntity:songEntity];
-        NSSortDescriptor* nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+        NSSortDescriptor* nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifiedDate" ascending:YES];
         [request setSortDescriptors:@[nameDescriptor]];
         NSManagedObjectContext* moc = self.dataManager.managedObjectContext;
                 
@@ -53,14 +53,15 @@
     
             BYSong* song = [[BYSong alloc] initWithEntity:songEntity insertIntoManagedObjectContext:self.dataManager.managedObjectContext];
             
-            song.title      = [item objectForKey:@"title"];
-            song.artist     = [item objectForKey:@"artist"];
-            song.urlString  = [item objectForKey:@"url"];
-            song.audio_id   = [item objectForKey:@"id"];
-            song.owner_id   = [item objectForKey:@"owner_id"];
-            song.lyrics_id  = [item objectForKey:@"lyrics_id"];
-            song.duration   = [item objectForKey:@"duration"];
-            song.genre_id   = [item objectForKey:@"genre_id"];
+            song.title          = [item objectForKey:@"title"];
+            song.artist         = [item objectForKey:@"artist"];
+            song.urlString      = [item objectForKey:@"url"];
+            song.audio_id       = [item objectForKey:@"id"];
+            song.owner_id       = [item objectForKey:@"owner_id"];
+            song.lyrics_id      = [item objectForKey:@"lyrics_id"];
+            song.duration       = [item objectForKey:@"duration"];
+            song.genre_id       = [item objectForKey:@"genre_id"];
+            song.modifiedDate   = [NSDate date];
             
             NSPredicate* predicate = [NSPredicate predicateWithFormat:@"audio_id = %@",song.audio_id];
             [request setPredicate:predicate];

@@ -2,7 +2,7 @@
 //  BYSong.m
 //  vkMusiс
 //
-//  Created by George on 13.02.15.
+//  Created by George on 16.02.15.
 //  Copyright (c) 2015 George. All rights reserved.
 //
 
@@ -12,10 +12,10 @@
 @implementation BYSong
 
 @dynamic artist;
-@dynamic data;
+@dynamic audio_id;
+@dynamic modifiedDate;
 @dynamic duration;
 @dynamic genre_id;
-@dynamic audio_id;
 @dynamic lyrics_id;
 @dynamic owner_id;
 @dynamic title;

@@ -41,6 +41,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
 
 }
 
@@ -114,7 +115,8 @@
         BYPlayerViewController*vc = segue.destinationViewController;
         UITableViewCell* cell = sender;
         NSUInteger index = [[self.tableView indexPathForCell:cell] row];
-        vc.song = [self.songs objectAtIndex:index];
+        vc.currentSong = [self.songs objectAtIndex:index];
+        vc.songs = self.songs;
     }
 }
 
@@ -169,7 +171,7 @@
         NSEntityDescription* songEntity = [NSEntityDescription entityForName:@"BYSong" inManagedObjectContext:self.dataManager.managedObjectContext];
         NSFetchRequest* request = [[NSFetchRequest alloc] init];
         [request setEntity:songEntity];
-        NSSortDescriptor* nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+        NSSortDescriptor* nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifiedDate" ascending:YES];
         [request setSortDescriptors:@[nameDescriptor]];
         NSManagedObjectContext* moc = [self.dataManager managedObjectContext];
         self.songs = [moc executeFetchRequest:request error:nil];
