@@ -11,12 +11,17 @@
 #import "BYAccessToken.h"
 #import "BYDataManager.h"
 
+@class BYSong;
+
 @interface BYServerManager : NSObject
 
 @property (strong, nonatomic) AFHTTPRequestOperationManager*    requestManager;
 @property (strong, nonatomic) BYAccessToken*                    token;
 @property (strong, nonatomic) AFURLSessionManager*              sessionManager;
 @property (strong, nonatomic) BYDataManager*                    dataManager;
+@property (strong, nonatomic) NSURL*                            baseURL;
+
+
 
 - (void)authorizeWithCompletionBlock:(void(^)())completion;
 
@@ -24,5 +29,29 @@
 
 - (void)getSongsWithParameters:(NSDictionary*)params onSuccess:(void(^)())success andFailure:(void(^)(NSError* error))failure;
 
+- (void)getContentAndCoverImageForSong:(BYSong*)song withParameters:(NSDictionary*)params onSuccess:(void(^)())success andFailure:(void(^)(NSError* error))failure;
+
+- (void)getLyricsWithParameters:(NSDictionary*)params onSuccess:(void(^)())success andFailure:(void(^)())failure;
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

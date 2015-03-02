@@ -8,16 +8,26 @@
 
 
 #import "BYPlayerViewController.h"
-
 #import "BYSongsListTableViewController.h"
+#import "BYServerManager.h"
+#import <UIImageView+AFNetworking.h>
+#import "BYDataManager.h"
 
 #define DOCUMENTS [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject]
 
-@interface BYPlayerViewController ()
+static const float deltaChangeOfSeekingTime = 15.f;
 
-@property (strong, nonatomic) NSOperationQueue* queue;
-@property (strong, nonatomic) NSURL*            fileURL;
-@property (strong, nonatomic) id                timeObserver;
+@interface BYPlayerViewController () <NSURLSessionDelegate>
+
+@property (strong, nonatomic) NSURL*                    fileURL;
+@property (strong, nonatomic) id                        timeObserver;
+@property (strong, nonatomic) BYServerManager*          serverManager;
+@property (strong, nonatomic) NSDictionary*             parameters;
+@property (strong, nonatomic) BYDataManager*            dataManager;
+@property (strong, nonatomic) NSURLSessionDataTask*     downloadDataTask;
+@property (strong, nonatomic) NSURLSessionDataTask*     downloadImageTask;
+@property (strong, nonatomic) NSURLSession*             session;
+@property (strong, nonatomic) NSOperationQueue*         queue;
 
 @end
 
@@ -27,6 +37,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     __weak BYPlayerViewController* weakSelf = self;
     
     CMTime time = CMTimeMakeWithSeconds(1.f, 10);
@@ -34,12 +45,12 @@
         if (![weakSelf.currentTimeSlider isHighlighted]) {
             weakSelf.currentTimeSlider.value = CMTimeGetSeconds(time);
         }
-        weakSelf.beginTimeLabel.text = [weakSelf stringFromSeconds:weakSelf.currentTimeSlider.value];
-        NSInteger secondsToEnd = [weakSelf.currentSong.duration integerValue] - weakSelf.currentTimeSlider.value;
-        weakSelf.endTimeLabel.text  =   [weakSelf stringFromSeconds:secondsToEnd];
+        weakSelf.beginTimeLabel.text        = [weakSelf stringFromSeconds:weakSelf.currentTimeSlider.value];
+        NSInteger secondsToEnd              = [weakSelf.currentSong.duration integerValue] - weakSelf.currentTimeSlider.value;
+        weakSelf.endTimeLabel.text          = [weakSelf stringFromSeconds:secondsToEnd];
         
-        NSLog(@"%f", CMTimeGetSeconds(time));
-        NSLog(@"%d",[weakSelf.currentSong.duration integerValue]);
+       // NSLog(@"%f", CMTimeGetSeconds(time));
+       // NSLog(@"%d",[weakSelf.currentSong.duration integerValue]);
         if (CMTimeGetSeconds(time) >= [weakSelf.currentSong.duration floatValue]) {
             [weakSelf setNextSong];
             [weakSelf configurePlayer];
@@ -50,22 +61,22 @@
     }];
     [self prepareToPlay];
     [self actionPlaySong:self.playButton];
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.player removeTimeObserver:self.timeObserver];
-    self.player = nil;
-    [[self.queue.operations firstObject] setQueuePriority:NSOperationQueuePriorityVeryLow];
 }
 
 - (void)dealloc {
-    [self.queue cancelAllOperations];
+
+    [self resetSession];
+
     NSLog(@"dealloc");
 }
 
@@ -73,23 +84,46 @@
 
 - (void)downloadInBackground {
     
-    NSBlockOperation* downloadSong = [NSBlockOperation blockOperationWithBlock:^{
+    [self resetSession];
+    
+    __weak BYPlayerViewController* weakSelf = self;
+    NSBlockOperation* blockOperation = [NSBlockOperation blockOperationWithBlock:^{
+        NSString* fileName = [NSString stringWithFormat:@"%@.mp3",weakSelf.currentSong.audio_id];
+        NSString* path = [DOCUMENTS stringByAppendingPathComponent:fileName];
         
-        NSString* fileName = [NSString stringWithFormat:@"%@.mp3",self.currentSong.audio_id];
-        NSString* filePath = [DOCUMENTS stringByAppendingPathComponent:fileName];
-        
-        if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-            NSData* songData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.currentSong.urlString] options:NSDataReadingMappedAlways error:nil];
-            [songData writeToFile:filePath atomically:YES];
+        if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+            
+            NSURL* url = [NSURL URLWithString:self.currentSong.urlString];
+            NSURLRequest* request = [NSURLRequest requestWithURL:url];
+            
+            weakSelf.downloadDataTask = [weakSelf.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                
+                if (error) {
+                    NSLog(@"%@", [error localizedDescription]);
+                    
+                } else {
+                    [data writeToFile:path atomically:YES];
+                }
+            }];
+            [weakSelf.downloadDataTask resume];
         }
+
     }];
-    [self.queue addOperation:downloadSong];
+    
+    [blockOperation setQueuePriority:NSOperationQueuePriorityLow];
+    [self.queue addOperation:blockOperation];
+}
+
+- (void)getContentAndCoverImage {
+    [self.serverManager getContentAndCoverImageForSong:self.currentSong withParameters:self.parameters onSuccess:^{
+        [self downloadAndSetCoverImage];
+    } andFailure:nil];
 }
 
 - (BYSong*)setNextSong {
     NSUInteger index = [self.songs indexOfObject:self.currentSong];
     index++;
-    if ([self.songs count] > index - 1) {
+    if ([self.songs count] > index) {
         self.currentSong = [self.songs objectAtIndex:index];
         self.fileURL = nil;
     }
@@ -107,7 +141,9 @@
 }
 
 - (void)prepareToPlay {
-
+    
+    self.parameters = nil;
+    [self getContentAndCoverImage];
     self.currentTimeSlider.maximumValue = [self.currentSong.duration floatValue];
     self.currentTimeSlider.value        = 0.f;
     [self downloadInBackground];
@@ -127,12 +163,50 @@
     return time;
 }
 
+- (void)seekToTime:(CGFloat)time {
+    
+    CMTime curTime = self.player.currentTime;
+    CGFloat neededTime = time + CMTimeGetSeconds(curTime);
+    [self.player seekToTime:CMTimeMakeWithSeconds(neededTime, 10)];
+}
+
+- (void)downloadAndSetCoverImage {
+
+    NSString* fileName = [NSString stringWithFormat:@"%@.png",self.currentSong.audio_id];
+    NSString* path = [DOCUMENTS stringByAppendingPathComponent:fileName];
+    NSURL* url = [NSURL URLWithString:self.currentSong.imagePath];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path] && url) {
+        
+        NSData* imageData = [NSData dataWithContentsOfURL:url];
+        [imageData writeToFile:path atomically:YES];
+        self.backgroundImageView.image = [UIImage imageWithData:imageData];
+        
+    } else if ([[NSFileManager defaultManager] fileExistsAtPath:path] && url) {
+        
+        [self.backgroundImageView setImage:[UIImage imageWithData:[NSData dataWithContentsOfFile:path]]];
+
+    } else {
+        [self.backgroundImageView setImage:[UIImage imageNamed:@"bg"]];
+        
+    }
+    
+   }
+
+- (void)resetSession {
+    
+    [self.downloadDataTask cancel];
+    self.downloadDataTask = nil;
+    self.session.configuration.URLCache = nil;
+    self.session = nil;
+}
+
 #pragma mark - Actions
 
 - (void)actionPlaySong:(UIButton*)sender {
     
-    UIImage* playImage      = [UIImage imageNamed:@"play.png"];
-    UIImage* pauseImage     = [UIImage imageNamed:@"pause.png"];
+    UIImage* playImage      = [UIImage imageNamed:@"play"];
+    UIImage* pauseImage     = [UIImage imageNamed:@"pause"];
     
     if ([[sender backgroundImageForState:UIControlStateNormal] isEqual:playImage]) {
         [sender setBackgroundImage:pauseImage forState:UIControlStateNormal];
@@ -173,6 +247,17 @@
 
 }
 
+- (IBAction)actionMoveAndReturn:(UIButton *)sender {
+    
+    if ([sender isEqual:self.returnButton]) {
+        [self seekToTime:-deltaChangeOfSeekingTime];
+        
+    } else if ([sender isEqual:self.moveButton]) {
+        [self seekToTime:deltaChangeOfSeekingTime];
+    }
+    
+}
+
 #pragma mark - Getters and Setters
 
 - (AVPlayer*)player {
@@ -186,22 +271,17 @@
     return _player;
 }
 
-- (NSOperationQueue*)queue {
-    if (!_queue) {
-        _queue = [[NSOperationQueue alloc] init];
-    }
-    return _queue;
-}
-
 - (NSURL*)fileURL {
     
     if (!_fileURL) {
+
         NSString* fileName = [NSString stringWithFormat:@"%@.mp3",self.currentSong.audio_id];
-        NSString *filePath = [DOCUMENTS stringByAppendingPathComponent:fileName];
+        NSString* filePath = [DOCUMENTS stringByAppendingPathComponent:fileName];
         
         if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
             _fileURL = [NSURL fileURLWithPath:filePath];
         }
+        
         else {
             _fileURL = [NSURL URLWithString:self.currentSong.urlString];
         }
@@ -211,15 +291,50 @@
 }
 
 
+- (BYServerManager*)serverManager {
+    if (!_serverManager) {
+        _serverManager = [[BYServerManager alloc] init];
+        _serverManager.baseURL = [NSURL URLWithString:@"http://ws.audioscrobbler.com/2.0/"];
+    }
+    return _serverManager;
+}
+
+- (NSDictionary*)parameters {
+    if (!_parameters) {
+        _parameters = @{@"method":@"track.getInfo",
+                        @"api_key":@"c681c1f8fcace0d8a742a178848ddcab",
+                        @"format":@"json",
+                        @"artist":self.currentSong.artist,
+                        @"track":self.currentSong.title};
+    }
+    return _parameters;
+}
+
+- (BYDataManager*)dataManager {
+    if (!_dataManager) {
+        _dataManager = [BYDataManager sharedManager];
+    }
+    return _dataManager;
+}
+
+
+- (NSURLSession*)session {
+    if (!_session) {
+        
+        NSURLSessionConfiguration* configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+        _session = [NSURLSession sessionWithConfiguration:configuration];
+    }
+    return _session;
+}
+
+- (NSOperationQueue*)queue {
+    if (!_queue) {
+        _queue = [[NSOperationQueue alloc] init];
+    }
+    return _queue;
+}
+
 @end
-
-
-
-
-
-
-
-
 
 
 

@@ -10,9 +10,10 @@
 #import "BYLoginViewController.h"
 #import "BYSong.h"
 
+//#define DOCUMENTS [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject]
+
 @interface BYServerManager()
 
-@property (strong, nonatomic) NSURL*                        baseURL;
 @property (strong, nonatomic) NSFetchedResultsController*   fetchResultsController;
 
 @end
@@ -27,6 +28,7 @@
     dispatch_once(&onceToken, ^{
         manager = [[BYServerManager alloc] init];
     });
+    
     return manager;
 }
 
@@ -36,7 +38,7 @@
     
     [self.requestManager GET:@"audio.get" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSLog(@"%@",[responseObject objectForKey:@"response"]);
+        //NSLog(@"%@",[responseObject objectForKey:@"response"]);
         
         NSArray* items = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
         
@@ -50,7 +52,6 @@
                 
         for (NSDictionary* item in items) {
             
-    
             BYSong* song = [[BYSong alloc] initWithEntity:songEntity insertIntoManagedObjectContext:self.dataManager.managedObjectContext];
             
             song.title          = [item objectForKey:@"title"];
@@ -63,11 +64,12 @@
             song.genre_id       = [item objectForKey:@"genre_id"];
             song.modifiedDate   = [NSDate date];
             
+            
             NSPredicate* predicate = [NSPredicate predicateWithFormat:@"audio_id = %@",song.audio_id];
             [request setPredicate:predicate];
             NSArray* objects = [moc executeFetchRequest:request error:nil];
             
-            NSLog(@"%@",objects);
+            //NSLog(@"%@",objects);
             
             if ([objects count] > 1) {
                 [moc deleteObject:song];
@@ -93,6 +95,58 @@
             failure(error);
         }
     }];
+}
+
+
+- (void)getContentAndCoverImageForSong:(BYSong *)song withParameters:(NSDictionary *)params onSuccess:(void (^)())success andFailure:(void (^)(NSError *))failure {
+    
+    if (!song.imagePath) {
+        [self.requestManager GET:@"" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            //NSLog(@"%@", [[responseObject objectForKey:@"album"] objectForKey:@"image"]);
+            
+            NSDictionary* track = [responseObject objectForKey:@"track"];
+            
+            song.imagePath = [[[[track objectForKey:@"album"] objectForKey:@"image"] firstObject] objectForKey:@"#text"];
+            song.content = [[responseObject objectForKey:@"wiki"] objectForKey:@"content"];
+            
+            
+            [self.dataManager saveContext];
+            if (success) {
+                success();
+            }
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", [error localizedDescription]);
+            
+            if (failure) {
+                failure(error);
+            }
+        }];
+    } else if (success) {
+        success();
+    }
+    
+    
+    
+    
+}
+
+
+- (void)getLyricsWithParameters:(NSDictionary *)params onSuccess:(void (^)())success andFailure:(void (^)())failure {
+    
+    [self.requestManager GET:@"lyrics.get" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"lyrics - %@", responseObject);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", [error localizedDescription]);
+        
+        if (failure) {
+            failure(error);
+        }
+    }];
+    
 }
 
 #pragma mark - Authorization

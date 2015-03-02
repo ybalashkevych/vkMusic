@@ -140,4 +140,8 @@
         forRequest:(NSURLRequest *)request;
 @end
 
+@interface AFImageCache : NSCache <AFImageCache>
+
+@end
+
 #endif
