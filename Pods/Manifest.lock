@@ -20,11 +20,24 @@ PODS:
   - AFNetworking/UIKit (2.5.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - TWTSideMenuViewController (0.3)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.4)
+  - TWTSideMenuViewController (from `https://github.com/twotoasters/TWTSideMenuViewController.git`, tag `v0.3`)
+
+EXTERNAL SOURCES:
+  TWTSideMenuViewController:
+    :git: https://github.com/twotoasters/TWTSideMenuViewController.git
+    :tag: v0.3
+
+CHECKOUT OPTIONS:
+  TWTSideMenuViewController:
+    :git: https://github.com/twotoasters/TWTSideMenuViewController.git
+    :tag: v0.3
 
 SPEC CHECKSUMS:
   AFNetworking: 0f54cb5d16ce38c1b76948faffb8d5fb705021c7
+  TWTSideMenuViewController: 477575b12d58e7f40fd91b6e9bc14a8812b42e2d
 
 COCOAPODS: 0.35.0

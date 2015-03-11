@@ -103,8 +103,6 @@
     if (!song.imagePath) {
         [self.requestManager GET:@"" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
-            //NSLog(@"%@", [[responseObject objectForKey:@"album"] objectForKey:@"image"]);
-            
             NSDictionary* track = [responseObject objectForKey:@"track"];
             
             song.imagePath = [[[[track objectForKey:@"album"] objectForKey:@"image"] firstObject] objectForKey:@"#text"];
@@ -126,18 +124,17 @@
     } else if (success) {
         success();
     }
-    
-    
-    
-    
 }
 
 
-- (void)getLyricsWithParameters:(NSDictionary *)params onSuccess:(void (^)())success andFailure:(void (^)())failure {
+- (void)getLyricsWithParameters:(NSDictionary *)params onSuccess:(void (^)(NSString* text))success andFailure:(void (^)(NSError* error))failure {
     
-    [self.requestManager GET:@"lyrics.get" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.requestManager GET:@"audio.getLyrics" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        NSLog(@"lyrics - %@", responseObject);
+        NSString* content = [[responseObject objectForKey:@"response"] objectForKey:@"text"];
+        if (success) {
+            success(content);
+        }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", [error localizedDescription]);

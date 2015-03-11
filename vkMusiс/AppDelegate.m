@@ -7,8 +7,15 @@
 //
 
 #import "AppDelegate.h"
+#import <TWTSideMenuViewController.h>
+#import "BYSongsListTableViewController.h"
+#import "BYMenuViewController.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () <TWTSideMenuViewControllerDelegate>
+
+@property (strong, nonatomic) TWTSideMenuViewController*        sideMenuViewController;
+@property (strong, nonatomic) BYMenuViewController*             menuViewController;
+@property (strong, nonatomic) BYSongsListTableViewController*   mainViewController;
 
 @end
 
@@ -16,7 +23,25 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main_IPhone" bundle:nil];
+    
+    self.menuViewController = [[BYMenuViewController alloc] init];
+    UINavigationController* nc = [storyboard instantiateViewControllerWithIdentifier:@"BYStartNavigationController"];
 
+    self.sideMenuViewController.delegate = self;
+    self.sideMenuViewController = [[TWTSideMenuViewController alloc] initWithMenuViewController:self.menuViewController mainViewController:nc];
+    
+    self.sideMenuViewController.shadowColor = [UIColor blackColor];
+    self.sideMenuViewController.edgeOffset = (UIOffset) { .horizontal = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? 18.0f : 0.0f };
+    self.sideMenuViewController.zoomScale = UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? 0.5634f : 0.85f;
+    self.window.rootViewController = self.sideMenuViewController;
+    
+    [self.window makeKeyAndVisible];
+    
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    
+    [[UINavigationBar appearance] setBackgroundColor:[UIColor colorWithRed:8/255.f green:79/255.f blue:118/255.f alpha:0]];
     
     return YES;
 }
@@ -42,6 +67,33 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     // Saves changes in the application's managed object context before the application terminates.
+}
+
+#pragma mark - TWTSideMenuViewControllerDelegate
+
+- (UIStatusBarStyle)sideMenuViewController:(TWTSideMenuViewController *)sideMenuViewController statusBarStyleForViewController:(UIViewController *)viewController
+{
+    if ([viewController isEqual:self.menuViewController]) {
+        return UIStatusBarStyleLightContent;
+    } else {
+        return UIStatusBarStyleDefault;
+    }
+}
+
+- (void)sideMenuViewControllerWillOpenMenu:(TWTSideMenuViewController *)sender {
+    NSLog(@"willOpenMenu");
+}
+
+- (void)sideMenuViewControllerDidOpenMenu:(TWTSideMenuViewController *)sender {
+    NSLog(@"didOpenMenu");
+}
+
+- (void)sideMenuViewControllerWillCloseMenu:(TWTSideMenuViewController *)sender {
+    NSLog(@"willCloseMenu");
+}
+
+- (void)sideMenuViewControllerDidCloseMenu:(TWTSideMenuViewController *)sender {
+    NSLog(@"didCloseMenu");
 }
 
 

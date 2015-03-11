@@ -31,7 +31,7 @@
 
 - (void)getContentAndCoverImageForSong:(BYSong*)song withParameters:(NSDictionary*)params onSuccess:(void(^)())success andFailure:(void(^)(NSError* error))failure;
 
-- (void)getLyricsWithParameters:(NSDictionary*)params onSuccess:(void(^)())success andFailure:(void(^)())failure;
+- (void)getLyricsWithParameters:(NSDictionary*)params onSuccess:(void(^)(NSString* text))success andFailure:(void(^)(NSError* error))failure;
 
 @end
 

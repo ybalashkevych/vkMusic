@@ -10,7 +10,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import "BYSong.h"
 #import "BYSongsListTableViewController.h"
-
 @interface BYPlayerViewController : UIViewController
 
 
@@ -26,7 +25,6 @@
 @property (weak, nonatomic) IBOutlet UISlider*      currentTimeSlider;
 @property (weak, nonatomic) IBOutlet UILabel*       beginTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel*       endTimeLabel;
-@property (weak, nonatomic) IBOutlet UIImageView*   coverImageView;
 @property (weak, nonatomic) IBOutlet UITextView*    lyicsTextView;
 @property (weak, nonatomic) IBOutlet UIImageView*   backgroundImageView;
 

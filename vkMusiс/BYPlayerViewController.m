@@ -28,6 +28,15 @@ static const float deltaChangeOfSeekingTime = 15.f;
 @property (strong, nonatomic) NSURLSessionDataTask*     downloadImageTask;
 @property (strong, nonatomic) NSURLSession*             session;
 @property (strong, nonatomic) NSOperationQueue*         queue;
+@property (strong, nonatomic) BYServerManager*          vkManager;
+
+@property (weak, nonatomic) IBOutlet UILabel*           preArtistLabel;
+@property (weak, nonatomic) IBOutlet UILabel*           preTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel*           nextArtistLabel;
+@property (weak, nonatomic) IBOutlet UILabel*           nextTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel*           currentArtistLabel;
+@property (weak, nonatomic) IBOutlet UILabel*           currentTitleLabel;
+
 
 @end
 
@@ -37,6 +46,12 @@ static const float deltaChangeOfSeekingTime = 15.f;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    UIBarButtonItem* rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolsNav"] style:UIBarButtonItemStylePlain target:self action:@selector(actionShowToolsPopover:)];
+    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+    
+    [self.currentTimeSlider setThumbImage:[UIImage imageNamed:@"thumb"] forState:UIControlStateNormal];
+    [self.currentTimeSlider setThumbImage:[UIImage imageNamed:@"thumb"] forState:UIControlStateHighlighted];
     
     __weak BYPlayerViewController* weakSelf = self;
     
@@ -49,8 +64,6 @@ static const float deltaChangeOfSeekingTime = 15.f;
         NSInteger secondsToEnd              = [weakSelf.currentSong.duration integerValue] - weakSelf.currentTimeSlider.value;
         weakSelf.endTimeLabel.text          = [weakSelf stringFromSeconds:secondsToEnd];
         
-       // NSLog(@"%f", CMTimeGetSeconds(time));
-       // NSLog(@"%d",[weakSelf.currentSong.duration integerValue]);
         if (CMTimeGetSeconds(time) >= [weakSelf.currentSong.duration floatValue]) {
             [weakSelf setNextSong];
             [weakSelf configurePlayer];
@@ -143,6 +156,7 @@ static const float deltaChangeOfSeekingTime = 15.f;
 - (void)prepareToPlay {
     
     self.parameters = nil;
+    [self getLyricsForCurrentSong];
     [self getContentAndCoverImage];
     self.currentTimeSlider.maximumValue = [self.currentSong.duration floatValue];
     self.currentTimeSlider.value        = 0.f;
@@ -187,7 +201,7 @@ static const float deltaChangeOfSeekingTime = 15.f;
         [self.backgroundImageView setImage:[UIImage imageWithData:[NSData dataWithContentsOfFile:path]]];
 
     } else {
-        [self.backgroundImageView setImage:[UIImage imageNamed:@"bg"]];
+        [self.backgroundImageView setImage:[UIImage imageNamed:@"bgPlayer"]];
         
     }
     
@@ -201,12 +215,45 @@ static const float deltaChangeOfSeekingTime = 15.f;
     self.session = nil;
 }
 
+- (void)getLyricsForCurrentSong {
+    
+    if (self.currentSong.lyrics_id) {
+        
+        BYAccessToken* token = self.vkManager.token;
+        NSDictionary* parameters = @{@"lyrics_id":self.currentSong.lyrics_id,
+                                     @"v":@"5.28",
+                                     @"access_token":token.token};
+        [self.vkManager getLyricsWithParameters:parameters onSuccess:^(NSString *text) {
+            self.currentSong.content = text;
+            self.lyicsTextView.text = self.currentSong.content;
+            [self.dataManager saveContext];
+        } andFailure:nil];
+    }
+}
+
 #pragma mark - Actions
 
 - (void)actionPlaySong:(UIButton*)sender {
     
     UIImage* playImage      = [UIImage imageNamed:@"play"];
     UIImage* pauseImage     = [UIImage imageNamed:@"pause"];
+    BYSong* previousSong = nil;
+    BYSong* nextSong = nil;
+    
+    
+    NSInteger indexOfCurrentSong = [self.songs indexOfObject:self.currentSong];
+    if (indexOfCurrentSong > 0 && indexOfCurrentSong < [self.songs count] + 1) {
+        previousSong = [self.songs objectAtIndex:indexOfCurrentSong - 1];
+        nextSong     = [self.songs objectAtIndex:indexOfCurrentSong + 1];
+    }
+    
+    self.preArtistLabel.text = previousSong.artist;
+    self.preTitleLabel.text = previousSong.title;
+    self.nextArtistLabel.text = nextSong.artist;
+    self.nextTitleLabel.text = nextSong.title;
+    self.currentArtistLabel.text = self.currentSong.artist;
+    self.currentTitleLabel.text = self.currentSong.title;
+    
     
     if ([[sender backgroundImageForState:UIControlStateNormal] isEqual:playImage]) {
         [sender setBackgroundImage:pauseImage forState:UIControlStateNormal];
@@ -255,6 +302,31 @@ static const float deltaChangeOfSeekingTime = 15.f;
     } else if ([sender isEqual:self.moveButton]) {
         [self seekToTime:deltaChangeOfSeekingTime];
     }
+    
+}
+
+- (void)actionShowToolsPopover:(UIBarButtonItem*)sender {
+    
+    UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Song tool's actions" message:@"Choose action" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction* deleteAllInfo = [UIAlertAction actionWithTitle:@"Delete (all info)" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+        
+    }];
+    UIAlertAction* deleteOnlyCache = [UIAlertAction actionWithTitle:@"Delete (only cache)" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+        
+    }];
+    UIAlertAction* addToFavorites = [UIAlertAction actionWithTitle:@"Add to Favorites" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+    }];
+    UIAlertAction* addToPlaylist = [UIAlertAction actionWithTitle:@"Add to Playlist" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+    }];
+    
+    [alertController addAction:addToFavorites];
+    [alertController addAction:addToPlaylist];
+    [alertController addAction:deleteOnlyCache];
+    [alertController addAction:deleteAllInfo];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
     
 }
 
@@ -332,6 +404,13 @@ static const float deltaChangeOfSeekingTime = 15.f;
         _queue = [[NSOperationQueue alloc] init];
     }
     return _queue;
+}
+
+- (BYServerManager*)vkManager {
+    if (!_vkManager) {
+        _vkManager = [BYServerManager sharedManager];
+    }
+    return _vkManager;
 }
 
 @end

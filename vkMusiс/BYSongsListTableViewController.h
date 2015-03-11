@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BYUtils.h"
 
 @interface BYSongsListTableViewController : UITableViewController
+
+@property (strong, nonatomic) NSPredicate*  predicate;
+@property (assign, nonatomic) BYMenu        menu;
+
+- (IBAction)actionShowMenu:(UIBarButtonItem*)sender;
 
 @end

@@ -10,6 +10,7 @@
 #import "BYServerManager.h"
 #import "BYPlayerViewController.h"
 #import "BYSong.h"
+#import <TWTSideMenuViewController.h>
 
 @interface BYSongsListTableViewController ()
 
@@ -19,11 +20,11 @@
 @property (assign, nonatomic) NSUInteger                    offset;
 @property (assign, nonatomic) NSUInteger                    countPackOfSongs;
 @property (strong, nonatomic) BYDataManager*                dataManager;
+@property (strong, nonatomic) TWTSideMenuViewController*    menuController;
 
 @end
 
 @implementation BYSongsListTableViewController
-
 
 #pragma mark - View Cycle
 
@@ -42,6 +43,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    if (self.menu == BYMenuFavorites) {
+        
+        UIBarButtonItem* rightBarButonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(actionEditSongList:)];
+        self.navigationItem.rightBarButtonItem = rightBarButonItem;
+        
+    }
+  
 
 }
 
@@ -91,6 +99,27 @@
     
     return cell;
 }
+
+
+
+
+
+#pragma mark - Actions
+
+- (IBAction)actionShowMenu:(UIBarButtonItem *)sender {
+    
+    [self.menuController openMenuAnimated:YES completion:^(BOOL finished) {
+        
+    }];
+    
+}
+
+- (void)actionEditSongList:(UIBarButtonItem*)sender {
+    
+}
+
+
+
 
 
 #pragma mark - Private Methods
@@ -146,37 +175,67 @@
 
 
 - (NSUInteger)offset {
+    
     if (!_offset) {
         _offset = 0;
     }
+    
     return _offset;
 }
 
 - (NSUInteger)countPackOfSongs {
+    
     if (!_countPackOfSongs) {
         _countPackOfSongs = 20;
     }
+    
     return _countPackOfSongs;
 }
 
 - (BYDataManager*)dataManager {
+    
     if (!_dataManager) {
         _dataManager = [BYDataManager sharedManager];
     }
+    
     return _dataManager;
 }
 
 - (NSArray*)songs {
+    
     if (!_songs) {
+        
         NSEntityDescription* songEntity = [NSEntityDescription entityForName:@"BYSong" inManagedObjectContext:self.dataManager.managedObjectContext];
+        
         NSFetchRequest* request = [[NSFetchRequest alloc] init];
+        
         [request setEntity:songEntity];
+        
+        [request setPredicate:self.predicate];
+        
         NSSortDescriptor* nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifiedDate" ascending:YES];
+        
         [request setSortDescriptors:@[nameDescriptor]];
+        
         NSManagedObjectContext* moc = [self.dataManager managedObjectContext];
+        
         self.songs = [moc executeFetchRequest:request error:nil];
     }
+    
     return _songs;
+}
+
+- (TWTSideMenuViewController*)menuController {
+    
+    if (!_menuController) {
+        
+        UIApplication* app = [UIApplication sharedApplication];
+
+        _menuController = (TWTSideMenuViewController*)[app.windows[0] rootViewController];
+    
+    }
+    
+    return _menuController;
 }
 
 @end
