@@ -17,3 +17,9 @@ typedef enum {
     BYMenuSettings
     
 } BYMenu;
+
+typedef enum {
+    
+    example1
+    
+}example;
