@@ -40,7 +40,6 @@
     self.webView.delegate = self;
     [self.webView loadRequest:self.request];
     
-    
 }
 
 #pragma mark - Private Methods

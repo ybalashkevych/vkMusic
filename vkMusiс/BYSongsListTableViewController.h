@@ -13,6 +13,8 @@
 
 @property (strong, nonatomic) NSPredicate*  predicate;
 @property (assign, nonatomic) BYMenu        menu;
+@property (strong, nonatomic) NSArray*      songs;
+
 
 - (IBAction)actionShowMenu:(UIBarButtonItem*)sender;
 

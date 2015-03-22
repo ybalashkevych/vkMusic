@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		920C5B701ABEB28E00CE9391 /* BYSong.m in Sources */ = {isa = PBXBuildFile; fileRef = 920C5B6F1ABEB28E00CE9391 /* BYSong.m */; };
+		920C5B731ABEB28F00CE9391 /* BYPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = 920C5B721ABEB28F00CE9391 /* BYPlaylist.m */; };
 		924108B71AAA501300ED6AFD /* BYMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 924108B61AAA501300ED6AFD /* BYMenuViewController.m */; };
 		9251DCF01A8BFCB8008656AF /* BYPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9251DCEF1A8BFCB8008656AF /* BYPlayerViewController.m */; };
 		928D4E651A8603CB0004C398 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 928D4E641A8603CB0004C398 /* main.m */; };
@@ -20,8 +22,6 @@
 		928D4E941A8606050004C398 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928D4E931A8606050004C398 /* UIKit.framework */; };
 		928D4E961A8606140004C398 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928D4E951A8606140004C398 /* AVFoundation.framework */; };
 		92C4FEE11AB101D0003B5BC1 /* BYUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C4FEE01AB101D0003B5BC1 /* BYUtils.m */; };
-		92C4FEE41AB1041E003B5BC1 /* BYSong.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C4FEE31AB1041E003B5BC1 /* BYSong.m */; };
-		92C4FEE71AB1041F003B5BC1 /* BYPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C4FEE61AB1041F003B5BC1 /* BYPlaylist.m */; };
 		92C4FEEB1AB105BC003B5BC1 /* BYPlaylistTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C4FEEA1AB105BC003B5BC1 /* BYPlaylistTableViewController.m */; };
 		92C7D59D1A889ADF00DA13E4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92C7D59C1A889ADF00DA13E4 /* Foundation.framework */; };
 		92C7D5A51A889D5600DA13E4 /* BYDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C7D5A41A889D5600DA13E4 /* BYDataManager.m */; };
@@ -29,6 +29,7 @@
 		92C7D5AD1A88B7DB00DA13E4 /* BYServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C7D5AC1A88B7DB00DA13E4 /* BYServerManager.m */; };
 		92C7D5B01A88D4B900DA13E4 /* BYSongsListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C7D5AF1A88D4B900DA13E4 /* BYSongsListTableViewController.m */; };
 		92C7D5B71A894A5600DA13E4 /* BYAccessToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 92C7D5B61A894A5600DA13E4 /* BYAccessToken.m */; };
+		92FD41931AB3AF8F007F9156 /* BYPlaylistPopoverTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FD41921AB3AF8F007F9156 /* BYPlaylistPopoverTableViewController.m */; };
 		AE47306B0123518099160A23 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1414F40D72C3F281E88A40D9 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,10 @@
 /* Begin PBXFileReference section */
 		1414F40D72C3F281E88A40D9 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DA2A477B2580E01D8427943 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		920C5B6E1ABEB28E00CE9391 /* BYSong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYSong.h; sourceTree = "<group>"; };
+		920C5B6F1ABEB28E00CE9391 /* BYSong.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYSong.m; sourceTree = "<group>"; };
+		920C5B711ABEB28F00CE9391 /* BYPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYPlaylist.h; sourceTree = "<group>"; };
+		920C5B721ABEB28F00CE9391 /* BYPlaylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYPlaylist.m; sourceTree = "<group>"; };
 		924108B51AAA501300ED6AFD /* BYMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYMenuViewController.h; sourceTree = "<group>"; };
 		924108B61AAA501300ED6AFD /* BYMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYMenuViewController.m; sourceTree = "<group>"; };
 		9251DCEE1A8BFCB8008656AF /* BYPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYPlayerViewController.h; sourceTree = "<group>"; };
@@ -67,10 +72,6 @@
 		928D4E981A863A1C0004C398 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		92C4FEDF1AB101CF003B5BC1 /* BYUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYUtils.h; sourceTree = "<group>"; };
 		92C4FEE01AB101D0003B5BC1 /* BYUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYUtils.m; sourceTree = "<group>"; };
-		92C4FEE21AB1041E003B5BC1 /* BYSong.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYSong.h; sourceTree = "<group>"; };
-		92C4FEE31AB1041E003B5BC1 /* BYSong.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYSong.m; sourceTree = "<group>"; };
-		92C4FEE51AB1041F003B5BC1 /* BYPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYPlaylist.h; sourceTree = "<group>"; };
-		92C4FEE61AB1041F003B5BC1 /* BYPlaylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYPlaylist.m; sourceTree = "<group>"; };
 		92C4FEE91AB105BC003B5BC1 /* BYPlaylistTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYPlaylistTableViewController.h; sourceTree = "<group>"; };
 		92C4FEEA1AB105BC003B5BC1 /* BYPlaylistTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYPlaylistTableViewController.m; sourceTree = "<group>"; };
 		92C7D59C1A889ADF00DA13E4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -84,6 +85,8 @@
 		92C7D5AF1A88D4B900DA13E4 /* BYSongsListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYSongsListTableViewController.m; sourceTree = "<group>"; };
 		92C7D5B51A894A5600DA13E4 /* BYAccessToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYAccessToken.h; sourceTree = "<group>"; };
 		92C7D5B61A894A5600DA13E4 /* BYAccessToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYAccessToken.m; sourceTree = "<group>"; };
+		92FD41911AB3AF8F007F9156 /* BYPlaylistPopoverTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BYPlaylistPopoverTableViewController.h; sourceTree = "<group>"; };
+		92FD41921AB3AF8F007F9156 /* BYPlaylistPopoverTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BYPlaylistPopoverTableViewController.m; sourceTree = "<group>"; };
 		9E17B5BF79E09521D21EC16E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -136,8 +139,8 @@
 				92C4FEDE1AB0F589003B5BC1 /* Favorite */,
 				928D4E8D1A86052A0004C398 /* Main_IPhone.storyboard */,
 				92C7D5AA1A88B61900DA13E4 /* ServerManager */,
-				92C7D5A61A88AAEA00DA13E4 /* ViewControllers */,
-				92C7D59E1A889C6A00DA13E4 /* Core Data Manager */,
+				92C7D5A61A88AAEA00DA13E4 /* Controllers */,
+				92C7D59E1A889C6A00DA13E4 /* Data Manager */,
 				928D4E621A8603CB0004C398 /* Supporting Files */,
 			);
 			path = "vkMusiс";
@@ -198,11 +201,13 @@
 			children = (
 				92C4FEE91AB105BC003B5BC1 /* BYPlaylistTableViewController.h */,
 				92C4FEEA1AB105BC003B5BC1 /* BYPlaylistTableViewController.m */,
+				92FD41911AB3AF8F007F9156 /* BYPlaylistPopoverTableViewController.h */,
+				92FD41921AB3AF8F007F9156 /* BYPlaylistPopoverTableViewController.m */,
 			);
 			name = Playlist;
 			sourceTree = "<group>";
 		};
-		92C7D59E1A889C6A00DA13E4 /* Core Data Manager */ = {
+		92C7D59E1A889C6A00DA13E4 /* Data Manager */ = {
 			isa = PBXGroup;
 			children = (
 				92C7D5B11A88D4C900DA13E4 /* Models */,
@@ -210,17 +215,19 @@
 				92C7D5A31A889D5600DA13E4 /* BYDataManager.h */,
 				92C7D5A41A889D5600DA13E4 /* BYDataManager.m */,
 			);
-			name = "Core Data Manager";
+			name = "Data Manager";
 			sourceTree = "<group>";
 		};
-		92C7D5A61A88AAEA00DA13E4 /* ViewControllers */ = {
+		92C7D5A61A88AAEA00DA13E4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				92E8E7F11AAE03EC009E4CAC /* Song List */,
+				92C4FEE81AB10589003B5BC1 /* Playlist */,
 				92E8E7F31AAE0411009E4CAC /* Menu */,
 				92C4FEDF1AB101CF003B5BC1 /* BYUtils.h */,
 				92C4FEE01AB101D0003B5BC1 /* BYUtils.m */,
 			);
-			name = ViewControllers;
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		92C7D5AA1A88B61900DA13E4 /* ServerManager */ = {
@@ -236,10 +243,10 @@
 		92C7D5B11A88D4C900DA13E4 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				92C4FEE51AB1041F003B5BC1 /* BYPlaylist.h */,
-				92C4FEE61AB1041F003B5BC1 /* BYPlaylist.m */,
-				92C4FEE21AB1041E003B5BC1 /* BYSong.h */,
-				92C4FEE31AB1041E003B5BC1 /* BYSong.m */,
+				920C5B711ABEB28F00CE9391 /* BYPlaylist.h */,
+				920C5B721ABEB28F00CE9391 /* BYPlaylist.m */,
+				920C5B6E1ABEB28E00CE9391 /* BYSong.h */,
+				920C5B6F1ABEB28E00CE9391 /* BYSong.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -285,8 +292,6 @@
 		92E8E7F31AAE0411009E4CAC /* Menu */ = {
 			isa = PBXGroup;
 			children = (
-				92C4FEE81AB10589003B5BC1 /* Playlist */,
-				92E8E7F11AAE03EC009E4CAC /* Song List */,
 				924108B51AAA501300ED6AFD /* BYMenuViewController.h */,
 				924108B61AAA501300ED6AFD /* BYMenuViewController.m */,
 			);
@@ -439,16 +444,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				928D4E681A8603CB0004C398 /* AppDelegate.m in Sources */,
+				92FD41931AB3AF8F007F9156 /* BYPlaylistPopoverTableViewController.m in Sources */,
 				92C7D5AD1A88B7DB00DA13E4 /* BYServerManager.m in Sources */,
+				920C5B731ABEB28F00CE9391 /* BYPlaylist.m in Sources */,
 				92C7D5A91A88AB3900DA13E4 /* BYLoginViewController.m in Sources */,
 				928D4E651A8603CB0004C398 /* main.m in Sources */,
+				920C5B701ABEB28E00CE9391 /* BYSong.m in Sources */,
 				92C4FEE11AB101D0003B5BC1 /* BYUtils.m in Sources */,
 				928D4E6B1A8603CB0004C398 /* vkMusi_.xcdatamodeld in Sources */,
-				92C4FEE71AB1041F003B5BC1 /* BYPlaylist.m in Sources */,
 				9251DCF01A8BFCB8008656AF /* BYPlayerViewController.m in Sources */,
 				92C7D5B01A88D4B900DA13E4 /* BYSongsListTableViewController.m in Sources */,
 				92C7D5B71A894A5600DA13E4 /* BYAccessToken.m in Sources */,
-				92C4FEE41AB1041E003B5BC1 /* BYSong.m in Sources */,
 				924108B71AAA501300ED6AFD /* BYMenuViewController.m in Sources */,
 				92C4FEEB1AB105BC003B5BC1 /* BYPlaylistTableViewController.m in Sources */,
 				92C7D5A51A889D5600DA13E4 /* BYDataManager.m in Sources */,

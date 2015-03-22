@@ -10,4 +10,8 @@
 
 @interface BYPlaylistTableViewController : UITableViewController
 
+
+- (IBAction)actionEditTable:(UIBarButtonItem*)sender;
+- (IBAction)actionShowMenu:(UIBarButtonItem*)sender;
+
 @end

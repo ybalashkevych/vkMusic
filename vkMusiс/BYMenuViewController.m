@@ -58,57 +58,59 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main_IPhone" bundle:nil];
-    UINavigationController* navC = nil;
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"isFavorite = TRUE"];
     
-    if (indexPath.section == 0) {
-        
-        BYSongsListTableViewController* vc = nil;
-        navC = [storyboard instantiateViewControllerWithIdentifier:@"BYStartNavigationController"];
-        vc = (BYSongsListTableViewController*)[navC topViewController];
-        vc.menu = BYMenuSongList;
-        [self.sideMenuViewController setMainViewController:navC animated:YES closeMenu:YES];
-        
-    } else if (indexPath.section == 1) {
-        
-        BYSongsListTableViewController* vc = nil;
-        navC   = [storyboard instantiateViewControllerWithIdentifier:@"BYStartNavigationController"];
-        vc = (BYSongsListTableViewController*)[navC topViewController];
-        ((BYSongsListTableViewController*) vc).predicate = predicate;
-        vc.menu = BYMenuFavorites;
-        [self.sideMenuViewController setMainViewController:navC animated:YES closeMenu:YES];
-        
-    } else if (indexPath.section == 2) {
-        
-//        navC   = [storyboard instantiateViewControllerWithIdentifier:@"BYStartNavigationController"];
-//        vc = (BYPlaylistTableViewController*)[navC topViewController];
-//        [self.sideMenuViewController setMainViewController:navC animated:YES closeMenu:YES];
-//        
+    switch (indexPath.section) {
+        case BYMenuSongList:
+            [self songListDidSelected];
+            break;
+            
+        case BYMenuFavorites:
+            [self favoritesDidSelected];
+            break;
+            
+        case BYMenuPlaylist:
+            [self playlistDidSelected];
+            break;
+            
+        case BYMenuSearch:
+            [self searchDidSelected];
+            break;
+            
+        case BYMenuSettings:
+            [self settingsDidSelected];
+            break;
+        default:
+            [self songListDidSelected];
+            break;
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
     
     return 10;
     
 }
 
-
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     return 50;
+    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    
     return 5;
+
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
 {
+    
     return 1;
+
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -140,6 +142,70 @@
     
     return cell;
 }
+
+
+
+
+
+
+#pragma mark - TableView Section Selected
+
+- (void)songListDidSelected {
+    
+    [self pushSongListViewControllerWithPredicate:nil andMenuSelection:BYMenuSongList];
+   
+}
+
+- (void)favoritesDidSelected {
+    
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"isFavorite = TRUE"];
+    [self pushSongListViewControllerWithPredicate:predicate andMenuSelection:BYMenuFavorites];
+    
+}
+
+- (void)playlistDidSelected {
+    
+    UINavigationController* navC = nil;
+    
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main_IPhone" bundle:nil];
+    navC = [storyboard instantiateViewControllerWithIdentifier:@"BYPlaylistNavigationController"];
+    [self.sideMenuViewController setMainViewController:navC animated:YES closeMenu:YES];
+    
+}
+
+- (void)searchDidSelected {
+    
+    
+    
+}
+
+- (void)settingsDidSelected {
+    
+    
+    
+}
+
+
+
+
+
+
+#pragma mark - Private Methods
+
+- (void)pushSongListViewControllerWithPredicate:(NSPredicate*)predicate andMenuSelection:(BYMenu)menuSelection {
+    
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main_IPhone" bundle:nil];
+    UINavigationController* navC = nil;
+    BYSongsListTableViewController* vc = nil;
+    
+    navC = [storyboard instantiateViewControllerWithIdentifier:@"BYStartNavigationController"];
+    vc = (BYSongsListTableViewController*)[navC topViewController];
+    vc.predicate = predicate;
+    vc.menu = menuSelection;
+    [self.sideMenuViewController setMainViewController:navC animated:YES closeMenu:YES];
+}
+
+
 
 
 

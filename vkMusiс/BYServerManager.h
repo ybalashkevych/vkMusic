@@ -33,6 +33,8 @@
 
 - (void)getLyricsWithParameters:(NSDictionary*)params onSuccess:(void(^)(NSString* text))success andFailure:(void(^)(NSError* error))failure;
 
+- (void)postDeleteSongWithParameters:(NSDictionary*)params onSuccess:(void(^)())success andFailure:(void(^)(NSError* error))failure;
+
 @end
 
 

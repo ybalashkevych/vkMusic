@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="BYPlaylist" representedClassName="BYPlaylist" syncable="YES">
-        <attribute name="playlist_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="songs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BYSong" inverseName="playlists" inverseEntity="BYSong" syncable="YES"/>
     </entity>
     <entity name="BYSong" representedClassName="BYSong" syncable="YES">
         <attribute name="artist" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="audio_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="dataPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="genre_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="imagePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isCached" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isFavorite" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="lyrics_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="modifiedDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="owner_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="playlist_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="urlString" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="playlists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="BYPlaylist" inverseName="songs" inverseEntity="BYPlaylist" syncable="YES"/>
     </entity>
     <elements>
-        <element name="BYSong" positionX="0" positionY="-9" width="128" height="238"/>
-        <element name="BYPlaylist" positionX="160" positionY="-9" width="128" height="58"/>
+        <element name="BYPlaylist" positionX="1287" positionY="-61" width="128" height="73"/>
+        <element name="BYSong" positionX="1105" positionY="-108" width="128" height="268"/>
     </elements>
 </model>

@@ -39,10 +39,12 @@
     
     [self.window makeKeyAndVisible];
     
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:  8 / 255.f
+                                                                  green: 79 / 255.f
+                                                                   blue:118 / 255.f
+                                                                  alpha:0]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    
-    [[UINavigationBar appearance] setBackgroundColor:[UIColor colorWithRed:8/255.f green:79/255.f blue:118/255.f alpha:0]];
-    
+
     return YES;
 }
 

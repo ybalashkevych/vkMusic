@@ -20,9 +20,10 @@
 
 @implementation BYServerManager
 
-#pragma mark - Singleton
+#pragma mark - Shared Manager
 
 + (BYServerManager*)sharedManager {
+    
     static BYServerManager* manager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -32,22 +33,29 @@
     return manager;
 }
 
+
+
+
+
+
 #pragma mark - API
 
 - (void)getSongsWithParameters:(NSDictionary *)params onSuccess:(void (^)())success andFailure:(void (^)(NSError *error))failure {
     
     [self.requestManager GET:@"audio.get" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        //NSLog(@"%@",[responseObject objectForKey:@"response"]);
-        
         NSArray* items = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
         
         NSEntityDescription* songEntity = [NSEntityDescription entityForName:@"BYSong" inManagedObjectContext:self.dataManager.managedObjectContext];
         
         NSFetchRequest* request = [[NSFetchRequest alloc] init];
+        
         [request setEntity:songEntity];
+        
         NSSortDescriptor* nameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"modifiedDate" ascending:YES];
+        
         [request setSortDescriptors:@[nameDescriptor]];
+        
         NSManagedObjectContext* moc = self.dataManager.managedObjectContext;
                 
         for (NSDictionary* item in items) {
@@ -68,8 +76,6 @@
             NSPredicate* predicate = [NSPredicate predicateWithFormat:@"audio_id = %@",song.audio_id];
             [request setPredicate:predicate];
             NSArray* objects = [moc executeFetchRequest:request error:nil];
-            
-            //NSLog(@"%@",objects);
             
             if ([objects count] > 1) {
                 [moc deleteObject:song];
@@ -146,6 +152,30 @@
     
 }
 
+- (void)postDeleteSongWithParameters:(NSDictionary*)params onSuccess:(void(^)())success andFailure:(void(^)(NSError* error))failure {
+    
+    [self.requestManager POST:@"audio.delete" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        if (success) {
+            success();
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", [error localizedDescription]);
+        
+        if (failure) {
+            failure(error);
+        }
+    }];
+    
+}
+
+
+
+
+
+
+
 #pragma mark - Authorization
 
 - (void)authorizeWithCompletionBlock:(void (^)())completion {
@@ -168,6 +198,11 @@
     
 }
 
+
+
+
+
+
 #pragma mark - Getters and Setters
 
 - (BYAccessToken*)token {
@@ -177,7 +212,7 @@
             _token = [NSKeyedUnarchiver unarchiveObjectWithData:encodedToken];
             NSDate* now = [NSDate dateWithTimeIntervalSinceNow:0];
             NSDate* expirationDate = _token.expirationDate;
-            
+
             if ([now compare:expirationDate] == NSOrderedDescending) {
                 _token = nil;
             }

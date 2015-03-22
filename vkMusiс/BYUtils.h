@@ -6,11 +6,14 @@
 //  Copyright (c) 2015 George. All rights reserved.
 //
 
+#define DOCUMENTS [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject]
+
 typedef enum {
     
-    BYMenuSongList = 0,
+    BYMenuSongList,
     BYMenuFavorites,
     BYMenuPlaylist,
-    BYMenuSearcg
+    BYMenuSearch,
+    BYMenuSettings
     
 } BYMenu;

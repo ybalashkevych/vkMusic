@@ -2,15 +2,17 @@
 //  BYPlaylist.m
 //  vkMusiс
 //
-//  Created by George on 12.03.15.
+//  Created by Yuri Balashkevych on 22.03.15.
 //  Copyright (c) 2015 George. All rights reserved.
 //
 
 #import "BYPlaylist.h"
+#import "BYSong.h"
 
 
 @implementation BYPlaylist
 
-@dynamic playlist_id;
+@dynamic name;
+@dynamic songs;
 
 @end

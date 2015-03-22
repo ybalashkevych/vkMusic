@@ -12,23 +12,26 @@
 #import "BYServerManager.h"
 #import <UIImageView+AFNetworking.h>
 #import "BYDataManager.h"
+#import <WYPopoverController.h>
+#import "BYPlaylistPopoverTableViewController.h"
 
-#define DOCUMENTS [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject]
 
 static const float deltaChangeOfSeekingTime = 15.f;
 
 @interface BYPlayerViewController () <NSURLSessionDelegate>
 
-@property (strong, nonatomic) NSURL*                    fileURL;
 @property (strong, nonatomic) id                        timeObserver;
-@property (strong, nonatomic) BYServerManager*          serverManager;
+@property (strong, nonatomic) NSURL*                    fileURL;
 @property (strong, nonatomic) NSDictionary*             parameters;
-@property (strong, nonatomic) BYDataManager*            dataManager;
 @property (strong, nonatomic) NSURLSessionDataTask*     downloadDataTask;
 @property (strong, nonatomic) NSURLSessionDataTask*     downloadImageTask;
 @property (strong, nonatomic) NSURLSession*             session;
 @property (strong, nonatomic) NSOperationQueue*         queue;
+
 @property (strong, nonatomic) BYServerManager*          vkManager;
+@property (strong, nonatomic) WYPopoverController*      popover;
+@property (strong, nonatomic) BYDataManager*            dataManager;
+@property (strong, nonatomic) BYServerManager*          serverManager;
 
 @property (weak, nonatomic) IBOutlet UILabel*           preArtistLabel;
 @property (weak, nonatomic) IBOutlet UILabel*           preTitleLabel;
@@ -36,7 +39,6 @@ static const float deltaChangeOfSeekingTime = 15.f;
 @property (weak, nonatomic) IBOutlet UILabel*           nextTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel*           currentArtistLabel;
 @property (weak, nonatomic) IBOutlet UILabel*           currentTitleLabel;
-
 
 @end
 
@@ -57,9 +59,11 @@ static const float deltaChangeOfSeekingTime = 15.f;
     
     CMTime time = CMTimeMakeWithSeconds(1.f, 10);
     self.timeObserver = [self.player addPeriodicTimeObserverForInterval:time queue:nil usingBlock:^(CMTime time) {
+        
         if (![weakSelf.currentTimeSlider isHighlighted]) {
             weakSelf.currentTimeSlider.value = CMTimeGetSeconds(time);
         }
+        
         weakSelf.beginTimeLabel.text        = [weakSelf stringFromSeconds:weakSelf.currentTimeSlider.value];
         NSInteger secondsToEnd              = [weakSelf.currentSong.duration integerValue] - weakSelf.currentTimeSlider.value;
         weakSelf.endTimeLabel.text          = [weakSelf stringFromSeconds:secondsToEnd];
@@ -72,6 +76,7 @@ static const float deltaChangeOfSeekingTime = 15.f;
         }
         
     }];
+    
     [self prepareToPlay];
     [self actionPlaySong:self.playButton];
     
@@ -89,7 +94,6 @@ static const float deltaChangeOfSeekingTime = 15.f;
 - (void)dealloc {
 
     [self resetSession];
-
     NSLog(@"dealloc");
 }
 
@@ -115,9 +119,11 @@ static const float deltaChangeOfSeekingTime = 15.f;
                     NSLog(@"%@", [error localizedDescription]);
                     
                 } else {
-                    [data writeToFile:path atomically:YES];
+                    [data writeToFile:path atomically:NO];
+                    weakSelf.currentSong.isCached = @(YES);
                 }
             }];
+            
             [weakSelf.downloadDataTask resume];
         }
 
@@ -128,12 +134,15 @@ static const float deltaChangeOfSeekingTime = 15.f;
 }
 
 - (void)getContentAndCoverImage {
+    
     [self.serverManager getContentAndCoverImageForSong:self.currentSong withParameters:self.parameters onSuccess:^{
         [self downloadAndSetCoverImage];
     } andFailure:nil];
+    
 }
 
 - (BYSong*)setNextSong {
+    
     NSUInteger index = [self.songs indexOfObject:self.currentSong];
     index++;
     if ([self.songs count] > index) {
@@ -141,9 +150,11 @@ static const float deltaChangeOfSeekingTime = 15.f;
         self.fileURL = nil;
     }
     return self.currentSong;
+    
 }
 
 - (BYSong*)setPreviousSong {
+    
     NSInteger index = [self.songs indexOfObject:self.currentSong];
     index--;
     if (index >= 0) {
@@ -151,6 +162,7 @@ static const float deltaChangeOfSeekingTime = 15.f;
         self.fileURL = nil;
     }
     return self.currentSong;
+    
 }
 
 - (void)prepareToPlay {
@@ -163,18 +175,23 @@ static const float deltaChangeOfSeekingTime = 15.f;
     [self downloadInBackground];
     [self.playButton setBackgroundImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
     [self.titleButton setTitle:[NSString stringWithFormat:@"%@ - %@", self.currentSong.artist, self.currentSong.title] forState:UIControlStateNormal];
+    
 }
 
 - (void)configurePlayer {
+    
     [self.player replaceCurrentItemWithPlayerItem:[AVPlayerItem playerItemWithURL:self.fileURL]];
+    
 }
 
 - (NSString*)stringFromSeconds:(NSUInteger)seconds {
+    
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"mm:ss"];
     NSDate* date = [NSDate dateWithTimeIntervalSince1970:seconds];
     NSString* time = [formatter stringFromDate:date];
     return time;
+    
 }
 
 - (void)seekToTime:(CGFloat)time {
@@ -231,6 +248,19 @@ static const float deltaChangeOfSeekingTime = 15.f;
     }
 }
 
+- (void) deleteSongWithParameters:(NSDictionary*)params {
+    
+    //params: @"audio_id" : "", @"owner_if" : "" , @"v" : "5.29"
+    [self.vkManager postDeleteSongWithParameters:params onSuccess:^{
+    } andFailure:nil];
+    
+}
+
+
+
+
+
+
 #pragma mark - Actions
 
 - (void)actionPlaySong:(UIButton*)sender {
@@ -242,8 +272,9 @@ static const float deltaChangeOfSeekingTime = 15.f;
     
     
     NSInteger indexOfCurrentSong = [self.songs indexOfObject:self.currentSong];
-    if (indexOfCurrentSong > 0 && indexOfCurrentSong < [self.songs count] + 1) {
+    if (indexOfCurrentSong > 0) {
         previousSong = [self.songs objectAtIndex:indexOfCurrentSong - 1];
+    } else if ([self.songs count] - 1 > indexOfCurrentSong) {
         nextSong     = [self.songs objectAtIndex:indexOfCurrentSong + 1];
     }
     
@@ -264,6 +295,7 @@ static const float deltaChangeOfSeekingTime = 15.f;
         [sender setBackgroundImage:playImage forState:UIControlStateNormal];
         [self.player pause];
     }
+    
 }
 
 - (IBAction)actionDissmissController:(UIButton *)sender {
@@ -290,6 +322,7 @@ static const float deltaChangeOfSeekingTime = 15.f;
 }
 
 - (IBAction)actionChangeCurrentTime:(UISlider *)sender {
+    
     [self.player seekToTime:CMTimeMakeWithSeconds(sender.value, 10)];
 
 }
@@ -307,25 +340,94 @@ static const float deltaChangeOfSeekingTime = 15.f;
 
 - (void)actionShowToolsPopover:(UIBarButtonItem*)sender {
     
-    UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Song tool's actions" message:@"Choose action" preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction* deleteAllInfo = [UIAlertAction actionWithTitle:@"Delete (all info)" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+    NSString* fileName = [NSString stringWithFormat:@"%@.mp3",self.currentSong.audio_id];
+    NSString* filePath = [DOCUMENTS stringByAppendingPathComponent:fileName];
+    __weak BYPlayerViewController* weakSelf = self;
+    
+    UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Song tool's actions"
+                                                                             message:@"Choose action"
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction* deleteAllInfo = [UIAlertAction actionWithTitle:@"Delete (all info)"  style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+        
+        if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+            NSError* error = nil;
+            [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
+            weakSelf.currentSong.isCached = @(NO);
+            if (error) {
+                NSLog(@"%@", [error localizedDescription]);
+            }
+        }
+        
+        [self actionPlayBackAndForward:self.playForwardButton];
+        
+        NSInteger index = [self.songs indexOfObject:self.currentSong] - 1;
+        BYSong* deletingSong = [self.songs objectAtIndex:index];
+        NSDictionary* params = @{@"audio_id":deletingSong.audio_id,
+                                 @"owner_id":deletingSong.owner_id,
+                                 @"v":@"5.28",
+                                 @"access_token":self.serverManager.token};
+        
+        [self deleteSongWithParameters:params];
+        
+        NSManagedObjectContext* moc = weakSelf.dataManager.managedObjectContext;
+        NSMutableArray* songs = [NSMutableArray arrayWithArray:self.songs];
+        
+        [songs removeObject:deletingSong];
+        self.songs = songs;
+        [moc deleteObject:deletingSong];
+        [self.dataManager saveContext];
+        
         
     }];
+    
+    
     UIAlertAction* deleteOnlyCache = [UIAlertAction actionWithTitle:@"Delete (only cache)" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
         
-    }];
-    UIAlertAction* addToFavorites = [UIAlertAction actionWithTitle:@"Add to Favorites" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSError* error = nil;
+        [[NSFileManager defaultManager] removeItemAtPath:filePath error:&error];
+        weakSelf.currentSong.isCached = @(NO);
+        if (error) {
+            NSLog(@"%@", [error localizedDescription]);
+        }
         
     }];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+        deleteOnlyCache.enabled = NO;
+    }
+
+    
+    NSString* favoriteActionString = self.currentSong.isFavorite.boolValue? @"Remove fr. Favorites" : @"Add to Favorites";
+    UIAlertActionStyle favoriteActionStyle = self.currentSong.isFavorite.boolValue ? UIAlertActionStyleDestructive : UIAlertActionStyleDefault;
+    
+    UIAlertAction* addToFavorites = [UIAlertAction actionWithTitle:favoriteActionString style:favoriteActionStyle handler:^(UIAlertAction *action) {
+        
+        BOOL isFavorite = weakSelf.currentSong.isFavorite.boolValue ^ 1;
+        weakSelf.currentSong.isFavorite = @(isFavorite);
+        [weakSelf.dataManager saveContext];
+        
+    }];
+    
     UIAlertAction* addToPlaylist = [UIAlertAction actionWithTitle:@"Add to Playlist" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         
+        BYPlaylistPopoverTableViewController* vc = [[BYPlaylistPopoverTableViewController alloc] initWithStyle:UITableViewStyleGrouped andBelongingSong:self.currentSong];
+        UIBarButtonItem* rigthB = [self.navigationItem.rightBarButtonItems firstObject];
+        
+        self.popover = [[WYPopoverController alloc] initWithContentViewController:vc];
+        
+        [self.popover presentPopoverFromBarButtonItem:rigthB permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
+        
     }];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
     
     [alertController addAction:addToFavorites];
     [alertController addAction:addToPlaylist];
     [alertController addAction:deleteOnlyCache];
     [alertController addAction:deleteAllInfo];
-    
+    [alertController addAction:cancelAction];
+
     [self presentViewController:alertController animated:YES completion:nil];
     
 }
@@ -333,6 +435,7 @@ static const float deltaChangeOfSeekingTime = 15.f;
 #pragma mark - Getters and Setters
 
 - (AVPlayer*)player {
+    
     if (!_player) {
         NSError* error = nil;
         _player = [[AVPlayer alloc] initWithURL:self.fileURL];
@@ -340,6 +443,7 @@ static const float deltaChangeOfSeekingTime = 15.f;
             NSLog(@"%@", [error localizedDescription]);
         }
     }
+    
     return _player;
 }
 
@@ -364,53 +468,73 @@ static const float deltaChangeOfSeekingTime = 15.f;
 
 
 - (BYServerManager*)serverManager {
+    
     if (!_serverManager) {
+        
         _serverManager = [[BYServerManager alloc] init];
         _serverManager.baseURL = [NSURL URLWithString:@"http://ws.audioscrobbler.com/2.0/"];
+        
     }
     return _serverManager;
+    
 }
 
 - (NSDictionary*)parameters {
+    
     if (!_parameters) {
+        
         _parameters = @{@"method":@"track.getInfo",
                         @"api_key":@"c681c1f8fcace0d8a742a178848ddcab",
                         @"format":@"json",
                         @"artist":self.currentSong.artist,
                         @"track":self.currentSong.title};
+        
     }
     return _parameters;
+    
 }
 
 - (BYDataManager*)dataManager {
+    
     if (!_dataManager) {
+        
         _dataManager = [BYDataManager sharedManager];
+        
     }
+    
     return _dataManager;
 }
 
 
 - (NSURLSession*)session {
+    
     if (!_session) {
         
         NSURLSessionConfiguration* configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
         _session = [NSURLSession sessionWithConfiguration:configuration];
+        
     }
+    
     return _session;
 }
 
 - (NSOperationQueue*)queue {
+    
     if (!_queue) {
         _queue = [[NSOperationQueue alloc] init];
     }
+    
     return _queue;
 }
 
 - (BYServerManager*)vkManager {
+    
     if (!_vkManager) {
         _vkManager = [BYServerManager sharedManager];
     }
+    
     return _vkManager;
+    
 }
 
 @end

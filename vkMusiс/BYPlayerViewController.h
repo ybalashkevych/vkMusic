@@ -30,7 +30,6 @@
 
 
 - (IBAction)actionPlaySong:(UIButton*)sender;
-- (IBAction)actionDissmissController:(UIButton*)sender;
 - (IBAction)actionPlayBackAndForward:(UIButton*)sender;
 - (IBAction)actionChangeCurrentTime:(UISlider*)sender;
 - (IBAction)actionMoveAndReturn:(UIButton*)sender;
