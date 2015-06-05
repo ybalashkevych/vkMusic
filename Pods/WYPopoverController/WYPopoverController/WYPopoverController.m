@@ -2934,7 +2934,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
 }
 
 #pragma mark Inline functions
-/*
+
 static NSString* WYStringFromOrientation(NSInteger orientation) {
     NSString *result = @"Unknown";
     
@@ -2957,7 +2957,6 @@ static NSString* WYStringFromOrientation(NSInteger orientation) {
     
     return result;
 }
- */
 
 static CGFloat WYStatusBarHeight() {
     UIInterfaceOrientation orienation = [[UIApplication sharedApplication] statusBarOrientation];

@@ -48,6 +48,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 5
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 0
 
+// RKRollCrawl
+#define COCOAPODS_POD_AVAILABLE_RKRollCrawl
+#define COCOAPODS_VERSION_MAJOR_RKRollCrawl 0
+#define COCOAPODS_VERSION_MINOR_RKRollCrawl 1
+#define COCOAPODS_VERSION_PATCH_RKRollCrawl 1
+
 // TWTSideMenuViewController
 #define COCOAPODS_POD_AVAILABLE_TWTSideMenuViewController
 #define COCOAPODS_VERSION_MAJOR_TWTSideMenuViewController 0

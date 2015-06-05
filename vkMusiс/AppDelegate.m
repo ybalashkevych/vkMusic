@@ -8,14 +8,14 @@
 
 #import "AppDelegate.h"
 #import <TWTSideMenuViewController.h>
-#import "BYSongsListTableViewController.h"
-#import "BYMenuViewController.h"
+#import "SongsListTableViewController.h"
+#import "MenuViewController.h"
 
 @interface AppDelegate () <TWTSideMenuViewControllerDelegate>
 
 @property (strong, nonatomic) TWTSideMenuViewController*        sideMenuViewController;
-@property (strong, nonatomic) BYMenuViewController*             menuViewController;
-@property (strong, nonatomic) BYSongsListTableViewController*   mainViewController;
+@property (strong, nonatomic) MenuViewController*             menuViewController;
+@property (strong, nonatomic) SongsListTableViewController*   mainViewController;
 
 @end
 
@@ -26,7 +26,7 @@
     
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main_IPhone" bundle:nil];
     
-    self.menuViewController = [[BYMenuViewController alloc] init];
+    self.menuViewController = [[MenuViewController alloc] init];
     UINavigationController* nc = [storyboard instantiateViewControllerWithIdentifier:@"BYStartNavigationController"];
 
     self.sideMenuViewController.delegate = self;
@@ -44,6 +44,8 @@
                                                                    blue:118 / 255.f
                                                                   alpha:0]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    
+    [application setStatusBarHidden:YES];
 
     return YES;
 }

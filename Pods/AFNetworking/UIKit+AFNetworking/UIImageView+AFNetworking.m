@@ -28,8 +28,7 @@
 
 #import "AFHTTPRequestOperation.h"
 
-@interface AFImageCache ()
-
+@interface AFImageCache : NSCache <AFImageCache>
 @end
 
 #pragma mark -

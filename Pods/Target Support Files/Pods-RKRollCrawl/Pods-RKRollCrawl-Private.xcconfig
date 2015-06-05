@@ -1,0 +1,6 @@
+#include "Pods-RKRollCrawl.xcconfig"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/RKRollCrawl" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/RKRollCrawl" "${PODS_ROOT}/Headers/Public/TWTSideMenuViewController" "${PODS_ROOT}/Headers/Public/WYPopoverController"
+OTHER_LDFLAGS = ${PODS_RKROLLCRAWL_OTHER_LDFLAGS} -ObjC
+PODS_ROOT = ${SRCROOT}
+SKIP_INSTALL = YES
